@@ -7,3 +7,6 @@
 
 # 安装npm，参考 
     http://thechangelog.com/install-node-js-with-homebrew-on-os-x/
+
+# ngnix install sinatra
+    http://sinatrasandbox.com/blog/2013/05/20/up-and-running-with-rake/

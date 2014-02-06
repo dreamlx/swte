@@ -1,0 +1,15 @@
+{
+  "name": "scrollup",
+  "homepage": "https://github.com/markgoodyear/scrollup",
+  "version": "2.1.1",
+  "_release": "2.1.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.1.1",
+    "commit": "85d135fbe28a7ebee103e4c2411df51968940754"
+  },
+  "_source": "git://github.com/markgoodyear/scrollup.git",
+  "_target": "~2.1.1",
+  "_originalSource": "scrollup",
+  "_direct": true
+}
