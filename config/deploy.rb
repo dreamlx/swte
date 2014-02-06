@@ -7,9 +7,6 @@ set :repo_url, 'git@github.com:dreamlx/swte.git'
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
-# Default deploy_to directory is /var/www/my_app
-set :deploy_to, '/srv/www/swte'
-
 # Default value for :scm is :git
 # set :scm, :git
 
@@ -20,7 +17,7 @@ set :deploy_to, '/srv/www/swte'
 # set :log_level, :debug
 
 # Default value for :pty is false
-# set :pty, true
+set :pty, true
 
 # Default value for :linked_files is []
 # set :linked_files, %w{config/database.yml}
@@ -34,25 +31,22 @@ set :deploy_to, '/srv/www/swte'
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
+# Default deploy_to directory is /var/www/my_app
+set :deploy_to, '/srv/www/swte'
+
+# Where will it be located on a server?
+set :unicorn_conf, "#{deploy_to}/current/config/unicorn.rb"
+set :unicorn_pid, "#{deploy_to}/shared/pids/unicorn.pid"
+
+# Unicorn control tasks
 namespace :deploy do
-
-  desc 'Restart application'
   task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
-      # Your restart mechanism here, for example:
-      # execute :touch, release_path.join('tmp/restart.txt')
-    end
+    run "if [ -f #{unicorn_pid} ]; then kill -USR2 `cat #{unicorn_pid}`; else cd #{deploy_to}/current && bundle exec unicorn -c #{unicorn_conf} -E #{rails_env} -D; fi"
   end
-
-  after :publishing, :restart
-
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
+  task :start do
+    run "cd #{deploy_to}/current && bundle exec unicorn -c #{unicorn_conf} -E #{rails_env} -D"
   end
-
+  task :stop do
+    run "if [ -f #{unicorn_pid} ]; then kill -QUIT `cat #{unicorn_pid}`; fi"
+  end
 end
