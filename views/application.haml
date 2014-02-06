@@ -1,0 +1,139 @@
+!!!
+%html
+  %head
+    %title 旺田科技 SWTE
+    %meta{:charset => "UTF-8"}
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
+    / Bootstrap
+    %link{:href => "http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css", :rel => "stylesheet"}
+    %link{:href => "http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css", :rel => "stylesheet"}
+    %link{:href => "/css/neat.css", :media => "screen", :rel => "stylesheet"}
+    / Use google font
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans|Dosis:200,400,800", :rel => "stylesheet", :type => "text/css"}
+    / HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
+    /[if lt IE 9]
+      %script{:src => "js/html5shiv.js"}
+      %script{:src => "js/respond.min.js"}
+
+  %body
+    = haml :_navbar
+    /layout start
+    = yield
+    /layout end
+
+    %footer.background-dark-gray.color-white
+      .container
+        .row
+          .col-md-3
+            %h3 菜单
+            %ul.nav-footer
+              %li.active
+                %a{:href => "index"} 首页
+              %li
+                %a{:href => "aboutus"} 企业介绍
+              %li
+                %a{:href => "client"} 客户案例
+              %li
+                %a{:href => "swte"} SWTE中心
+              %li
+                %a{:href => "login"} 用户登录
+              %li
+                %a{:href => "contact"} 联系我们
+          .col-md-9
+            = haml :_links
+        .row
+          .col-md-12
+            %hr/
+            .row
+              .col-md-6
+                All rights reserved &copy; 2014
+                %a{:href => "http://w3widgets.com"} swte.cn 旺田科技
+              .col-md-6
+                %p.social
+                  %a{:href => "/"}
+                    %span.fa.fa-facebook
+                  %a{:href => "/"}
+                    %span.fa.fa-twitter
+                  %a{:href => "/"}
+                    %span.fa.fa-youtube
+                  %a{:href => "/"}
+                    %span.fa.fa-linkedin
+                  %a{:href => "/"}
+                    %span.fa.fa-pinterest
+    / jQuery (necessary for Bootstrap's JavaScript plugins)
+    %script{:src => "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}
+    / Include all compiled plugins (below), or include individual files as needed
+    %script{:src => "http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"}
+    / Include slider
+    %script{:src => "js/jquery.event.move.js"}
+    %script{:src => "js/responsive-slider.js"}
+    %script{:src => "js/responsive-calendar.js"}
+    :javascript
+      function matchHeight(objects, cols, nomatch) {
+        if (nomatch === undefined) nomatch = false;
+
+        var i, j, group, height, max, objIndex = 0;
+        var objCatArr = [];
+        var maxHeightArr = [];
+
+        for (i = 0; i < objects.length; i++) {
+          group = Math.floor((i)/cols);
+          if (objCatArr[group] === undefined) {
+            objCatArr[group] = [];
+          }
+          objCatArr[group].push(objects[i]);
+        }
+
+        for (i in objCatArr) {
+          max = 0;
+          for (j in objCatArr[i]) {
+            height = $(objCatArr[i][j]).height();
+            max = Math.max(max, height);
+          }
+          maxHeightArr.push(max);
+          if (!nomatch)
+            $(objCatArr[i]).height(max);
+        }
+
+        return maxHeightArr;
+      };
+    :javascript
+      $(document).ready(function() {
+        function reduceMenu() {
+          $('#mainMenu').addClass('scroll');
+        }
+
+        function expandMenu() {
+          $('#mainMenu').removeClass('scroll');
+        }
+
+        $(window).on('scroll', function(){
+          if ($(window).scrollTop() > 81) {
+            reduceMenu();
+          } else {
+            expandMenu();
+          }
+        });
+
+        $('.responsive-calendar').responsiveCalendar({
+          time: '2013-05',
+          events: {
+            "2013-05-30": {"number": 5, "badgeClass": "background-nephritis", "url": "http://w3widgets.com/responsive-slider"},
+            "2013-05-26": {"number": 1, "badgeClass": "background-nephritis", "url": "http://w3widgets.com"}, 
+            "2013-05-03": {"number": 1, "badgeClass": "background-pomegranate"}, 
+            "2013-05-12": {}}
+        });
+      });
+
+      $(window).load(function(){
+        if ($(window).width() > 767) {
+          matchHeight($('.info-thumbnail .caption .description'), 3);
+        }
+
+        $(window).on('resize', function(){
+          if ($(window).width() > 767) {
+            $('.info-thumbnail .caption .description').height('auto');
+            matchHeight($('.info-thumbnail .caption .description'), 3);
+          }
+        });
+      });
